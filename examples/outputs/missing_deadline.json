@@ -1,0 +1,39 @@
+{
+  "case": "missing_deadline",
+  "topic": "校园活动",
+  "expect": "缺少截止时间，明确返回未完成并说明缺口",
+  "actual": {
+    "outcome": "incomplete",
+    "plan_status": "not_saved",
+    "plan_id": null,
+    "assets": [],
+    "total_cost": null,
+    "total_duration_min": null,
+    "published": false,
+    "tool_calls": 0,
+    "incomplete_reason": "missing_input:deadline",
+    "gap": {
+      "type": "missing_input",
+      "missing": [
+        "deadline"
+      ]
+    },
+    "reused_steps": [],
+    "reasoning": "缺少必要输入（deadline），无法开始规划。预算与截止时间是硬性约束，不能用默认值替代。"
+  },
+  "runs": [
+    {
+      "outcome": "incomplete",
+      "plan_status": "not_saved",
+      "plan_id": null,
+      "assets": [],
+      "total_cost": null,
+      "published": false,
+      "tool_calls": 0,
+      "reused_steps": [],
+      "steps": []
+    }
+  ],
+  "plan_count_after": 0,
+  "trace_file": "examples/traces/missing_deadline.jsonl"
+}

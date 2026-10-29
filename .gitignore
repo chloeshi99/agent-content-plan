@@ -1,0 +1,30 @@
+# 环境变量（密钥）
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 测试与缓存
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# 运行产物
+data/plans.sqlite3
+data/plans.sqlite3-journal
+data/plans.sqlite3-wal
+data/.tmp_*.sqlite3
+
+# 注意：examples/traces/*.jsonl 是交付材料，不忽略。
+examples/traces/_tmp_*.jsonl
+
+# 编辑器
+.vscode/
+.idea/
+.DS_Store

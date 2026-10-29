@@ -1,0 +1,74 @@
+{
+  "version": "2026.10",
+  "cases": {
+    "normal_complete": {
+      "topic": "校园开放日",
+      "budget": 20,
+      "deadline": "2026-11-20",
+      "expect": "预算充足且时限宽裕，选材->生成脚本->估算->保存全部成功",
+      "assert_outcome": "completed",
+      "assert_plan_status": "saved"
+    },
+    "budget_overrun": {
+      "topic": "品牌推广",
+      "budget": 10,
+      "deadline": "2026-11-30",
+      "expect": "初始方案估算超出预算 10，模型改选更省的替代组合后重新估算并保存（对应参考实例：12 -> 8）",
+      "assert_outcome": "completed",
+      "assert_plan_status": "saved",
+      "assert_replanned": true
+    },
+    "missing_budget": {
+      "topic": "校园活动",
+      "budget": null,
+      "deadline": "2026-11-30",
+      "expect": "缺少预算，明确返回未完成并说明缺口，不进入工具循环",
+      "assert_outcome": "incomplete",
+      "assert_incomplete_reason": "missing_input"
+    },
+    "missing_deadline": {
+      "topic": "校园活动",
+      "budget": 15,
+      "deadline": null,
+      "expect": "缺少截止时间，明确返回未完成并说明缺口",
+      "assert_outcome": "incomplete",
+      "assert_incomplete_reason": "missing_input"
+    },
+    "tool_failure": {
+      "topic": "行业深度报告",
+      "budget": 20,
+      "deadline": "2026-11-30",
+      "expect": "脚本生成工具注入永久故障，重试后改选其他素材重规划，保留检索成功结果，最终完成",
+      "assert_outcome": "completed",
+      "assert_replanned": true
+    },
+    "no_feasible_plan": {
+      "topic": "校园活动",
+      "budget": 2,
+      "deadline": "2026-11-30",
+      "expect": "预算过低且无任何可行组合，返回未完成并给出预算缺口",
+      "assert_outcome": "incomplete",
+      "assert_incomplete_reason": "no_feasible_plan_within_budget"
+    },
+    "duplicate_execution": {
+      "topic": "校园开放日",
+      "budget": 20,
+      "deadline": "2026-11-20",
+      "repeat": 2,
+      "expect": "相同方案重复执行，第二次保存返回 duplicate，方案表只有一份",
+      "assert_outcome": "completed",
+      "assert_plan_status": "duplicate"
+    },
+    "resume_after_failure": {
+      "topic": "社群快讯",
+      "budget": 20,
+      "deadline": "2026-11-30",
+      "repeat": 2,
+      "resume": true,
+      "run_key": "resume:A09",
+      "expect": "首次执行脚本生成瞬时故障连续失败，第二次续跑复用已成功的检索步骤并重试失败步骤，最终完成（加分项）",
+      "assert_outcome": "completed",
+      "assert_reused_steps": true
+    }
+  }
+}

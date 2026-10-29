@@ -1,0 +1,58 @@
+{
+  "case": "no_feasible_plan",
+  "topic": "校园活动",
+  "expect": "预算过低且无任何可行组合，返回未完成并给出预算缺口",
+  "actual": {
+    "outcome": "incomplete",
+    "plan_status": "not_saved",
+    "plan_id": null,
+    "assets": [
+      "A08",
+      "A07"
+    ],
+    "total_cost": 11,
+    "total_duration_min": 210,
+    "published": false,
+    "tool_calls": 3,
+    "incomplete_reason": "no_feasible_plan_within_budget",
+    "gap": {
+      "type": "budget",
+      "over_by": 9,
+      "required_budget": 11,
+      "given_budget": 2
+    },
+    "reused_steps": [],
+    "reasoning": "成本超出预算且没有可行的替代组合（已尝试 1 次重规划），返回未完成并说明缺口。"
+  },
+  "runs": [
+    {
+      "outcome": "incomplete",
+      "plan_status": "not_saved",
+      "plan_id": null,
+      "assets": [
+        "A08",
+        "A07"
+      ],
+      "total_cost": 11,
+      "published": false,
+      "tool_calls": 3,
+      "reused_steps": [],
+      "steps": [
+        {
+          "step": "search_materials:1",
+          "status": "succeeded"
+        },
+        {
+          "step": "generate_script:2",
+          "status": "succeeded"
+        },
+        {
+          "step": "estimate_cost:3",
+          "status": "succeeded"
+        }
+      ]
+    }
+  ],
+  "plan_count_after": 0,
+  "trace_file": "examples/traces/no_feasible_plan.jsonl"
+}

@@ -1,0 +1,63 @@
+{
+  "case": "tool_failure",
+  "topic": "行业深度报告",
+  "expect": "脚本生成工具注入永久故障，重试后改选其他素材重规划，保留检索成功结果，最终完成",
+  "actual": {
+    "outcome": "completed",
+    "plan_status": "saved",
+    "plan_id": "P-行业深度报告-b2ae39c8",
+    "assets": [
+      "A06"
+    ],
+    "total_cost": 8,
+    "total_duration_min": 165,
+    "published": false,
+    "tool_calls": 6,
+    "incomplete_reason": null,
+    "gap": null,
+    "reused_steps": [],
+    "reasoning": "方案保存成功（仅保存草稿，未做任何真实提交）。"
+  },
+  "runs": [
+    {
+      "outcome": "completed",
+      "plan_status": "saved",
+      "plan_id": "P-行业深度报告-b2ae39c8",
+      "assets": [
+        "A06"
+      ],
+      "total_cost": 8,
+      "published": false,
+      "tool_calls": 6,
+      "reused_steps": [],
+      "steps": [
+        {
+          "step": "search_materials:1",
+          "status": "succeeded"
+        },
+        {
+          "step": "generate_script:2",
+          "status": "failed"
+        },
+        {
+          "step": "generate_script:3",
+          "status": "failed"
+        },
+        {
+          "step": "generate_script:4",
+          "status": "succeeded"
+        },
+        {
+          "step": "estimate_cost:5",
+          "status": "succeeded"
+        },
+        {
+          "step": "save_plan:6",
+          "status": "succeeded"
+        }
+      ]
+    }
+  ],
+  "plan_count_after": 1,
+  "trace_file": "examples/traces/tool_failure.jsonl"
+}

@@ -1,0 +1,55 @@
+{
+  "case": "normal_complete",
+  "topic": "校园开放日",
+  "expect": "预算充足且时限宽裕，选材->生成脚本->估算->保存全部成功",
+  "actual": {
+    "outcome": "completed",
+    "plan_status": "saved",
+    "plan_id": "P-校园开放日-4c099f68",
+    "assets": [
+      "A08"
+    ],
+    "total_cost": 7,
+    "total_duration_min": 135,
+    "published": false,
+    "tool_calls": 4,
+    "incomplete_reason": null,
+    "gap": null,
+    "reused_steps": [],
+    "reasoning": "方案保存成功（仅保存草稿，未做任何真实提交）。"
+  },
+  "runs": [
+    {
+      "outcome": "completed",
+      "plan_status": "saved",
+      "plan_id": "P-校园开放日-4c099f68",
+      "assets": [
+        "A08"
+      ],
+      "total_cost": 7,
+      "published": false,
+      "tool_calls": 4,
+      "reused_steps": [],
+      "steps": [
+        {
+          "step": "search_materials:1",
+          "status": "succeeded"
+        },
+        {
+          "step": "generate_script:2",
+          "status": "succeeded"
+        },
+        {
+          "step": "estimate_cost:3",
+          "status": "succeeded"
+        },
+        {
+          "step": "save_plan:4",
+          "status": "succeeded"
+        }
+      ]
+    }
+  ],
+  "plan_count_after": 1,
+  "trace_file": "examples/traces/normal_complete.jsonl"
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "case": "normal_complete",
+    "plan_count": 1
+  },
+  {
+    "case": "budget_overrun",
+    "plan_count": 1
+  },
+  {
+    "case": "missing_budget",
+    "plan_count": 0
+  },
+  {
+    "case": "missing_deadline",
+    "plan_count": 0
+  },
+  {
+    "case": "tool_failure",
+    "plan_count": 1
+  },
+  {
+    "case": "no_feasible_plan",
+    "plan_count": 0
+  },
+  {
+    "case": "duplicate_execution",
+    "plan_count": 1
+  },
+  {
+    "case": "resume_after_failure",
+    "plan_count": 1
+  }
+]

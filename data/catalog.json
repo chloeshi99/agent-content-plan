@@ -1,0 +1,125 @@
+{
+  "version": "2026.10",
+  "budget_unit": "模拟单位",
+  "note": "素材与工具费用均为合成数据。费用单位为『模拟单位』，不涉及真实货币。",
+  "plan_tool_set": ["T-SEARCH", "T-COPY", "T-COST", "T-SAVE"],
+  "plan_tool_cost_total": 3,
+  "plan_tool_note": "一个完整方案固定经过四个工具：素材检索(1) + 脚本生成(2) + 成本估算(0) + 方案保存(0) = 3 个模拟单位。费用估算由服务端确定性计算，模型不参与算术。",
+  "materials": [
+    {
+      "id": "A01",
+      "title": "秋季新品上市主视觉",
+      "type": "poster",
+      "tags": ["新品", "主视觉", "电商"],
+      "keywords": ["新品上市", "主视觉", "电商", "秋季"],
+      "summary": "用于新品上市首屏的横版主视觉，强调产品质感与核心卖点。",
+      "cost": 8,
+      "duration_min": 120
+    },
+    {
+      "id": "A03",
+      "title": "社交媒体文案合集",
+      "type": "copywriting",
+      "tags": ["文案", "社交", "通用"],
+      "keywords": ["社交文案", "文案", "社交", "通用"],
+      "summary": "适配多个社交平台的多版本文案合集，可作为通用文案底稿。",
+      "cost": 3,
+      "duration_min": 45
+    },
+    {
+      "id": "A02",
+      "title": "短视频脚本-产品卖点",
+      "type": "video_script",
+      "tags": ["短视频", "卖点", "电商"],
+      "keywords": ["短视频", "卖点", "电商", "社区活动"],
+      "summary": "30 秒竖版短视频脚本，突出三个核心卖点与行动号召。",
+      "cost": 5,
+      "duration_min": 90
+    },
+    {
+      "id": "A09",
+      "title": "社群快讯模板",
+      "type": "copy_pack",
+      "tags": ["快讯", "社群", "通用"],
+      "keywords": ["社区活动", "快讯", "社群"],
+      "summary": "面向社群分发的快讯模板套件，适合轻量级活动通知与转发。",
+      "cost": 2,
+      "duration_min": 30
+    },
+    {
+      "id": "A04",
+      "title": "公众号长图文",
+      "type": "article",
+      "tags": ["图文", "深度", "教育"],
+      "keywords": ["行业深度报告", "深度报告", "教育"],
+      "summary": "面向深度阅读场景的长图文，适合教育与知识类主题。",
+      "cost": 6,
+      "duration_min": 100
+    },
+    {
+      "id": "A05",
+      "title": "信息流广告素材包",
+      "type": "ad_pack",
+      "tags": ["广告", "投放", "电商"],
+      "keywords": ["品牌推广", "广告", "投放", "电商"],
+      "summary": "多尺寸信息流广告素材包，含主图与短文案组合。",
+      "cost": 4,
+      "duration_min": 60
+    },
+    {
+      "id": "A06",
+      "title": "博客长文-行业洞察",
+      "type": "article",
+      "tags": ["长文", "洞察", "通用"],
+      "keywords": ["品牌推广", "长文", "洞察", "通用", "行业深度报告"],
+      "summary": "带数据支撑的行业洞察长文，适合拉新与建立专业形象。",
+      "cost": 5,
+      "duration_min": 110
+    },
+    {
+      "id": "A07",
+      "title": "短视频脚本-用户故事",
+      "type": "video_script",
+      "tags": ["短视频", "故事", "教育"],
+      "keywords": ["校园活动", "短视频", "教育"],
+      "summary": "以用户故事线展开的短视频脚本，适合情感共鸣类主题。",
+      "cost": 4,
+      "duration_min": 75
+    },
+    {
+      "id": "A08",
+      "title": "校园活动海报",
+      "type": "poster",
+      "tags": ["活动", "海报", "校园"],
+      "keywords": ["校园活动", "活动", "海报", "校园"],
+      "summary": "线下校园活动主海报，可用于社团纳新与讲座预热。",
+      "cost": 4,
+      "duration_min": 80
+    }
+  ],
+  "tool_costs": {
+    "T-SEARCH": 1,
+    "T-COPY": 2,
+    "T-COST": 0,
+    "T-SAVE": 0
+  },
+  "tool_durations": {
+    "T-SEARCH": 10,
+    "T-COPY": 30,
+    "T-COST": 5,
+    "T-SAVE": 10
+  },
+  "failure_injection": {
+    "A04": {
+      "generate_script": {
+        "message": "脚本生成服务持续报错（注入永久故障，用于验证改用替代素材重规划）"
+      }
+    },
+    "A09": {
+      "generate_script": {
+        "message": "脚本生成服务临时不可用（注入瞬时故障：连续失败 2 次后恢复，用于验证失败步骤续跑）",
+        "fail_times": 2
+      }
+    }
+  }
+}

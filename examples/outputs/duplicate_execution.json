@@ -1,0 +1,85 @@
+{
+  "case": "duplicate_execution",
+  "topic": "校园开放日",
+  "expect": "相同方案重复执行，第二次保存返回 duplicate，方案表只有一份",
+  "actual": {
+    "outcome": "completed",
+    "plan_status": "duplicate",
+    "plan_id": "P-校园开放日-4c099f68",
+    "assets": [
+      "A08"
+    ],
+    "total_cost": 7,
+    "total_duration_min": 135,
+    "published": false,
+    "tool_calls": 4,
+    "incomplete_reason": null,
+    "gap": null,
+    "reused_steps": [],
+    "reasoning": "方案保存返回 duplicate：相同方案已存在，未重复创建。"
+  },
+  "runs": [
+    {
+      "outcome": "completed",
+      "plan_status": "saved",
+      "plan_id": "P-校园开放日-4c099f68",
+      "assets": [
+        "A08"
+      ],
+      "total_cost": 7,
+      "published": false,
+      "tool_calls": 4,
+      "reused_steps": [],
+      "steps": [
+        {
+          "step": "search_materials:1",
+          "status": "succeeded"
+        },
+        {
+          "step": "generate_script:2",
+          "status": "succeeded"
+        },
+        {
+          "step": "estimate_cost:3",
+          "status": "succeeded"
+        },
+        {
+          "step": "save_plan:4",
+          "status": "succeeded"
+        }
+      ]
+    },
+    {
+      "outcome": "completed",
+      "plan_status": "duplicate",
+      "plan_id": "P-校园开放日-4c099f68",
+      "assets": [
+        "A08"
+      ],
+      "total_cost": 7,
+      "published": false,
+      "tool_calls": 4,
+      "reused_steps": [],
+      "steps": [
+        {
+          "step": "search_materials:1",
+          "status": "succeeded"
+        },
+        {
+          "step": "generate_script:2",
+          "status": "succeeded"
+        },
+        {
+          "step": "estimate_cost:3",
+          "status": "succeeded"
+        },
+        {
+          "step": "save_plan:4",
+          "status": "succeeded"
+        }
+      ]
+    }
+  ],
+  "plan_count_after": 1,
+  "trace_file": "examples/traces/duplicate_execution.jsonl"
+}
