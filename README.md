@@ -218,13 +218,13 @@ python -m scripts.show_trace examples/traces/budget_overrun.jsonl
 |---|---|
 | **题号** | `项目2` —— 内容任务规划 Agent |
 | **GitHub URL** | https://github.com/chloeshi99/agent-content-plan |
-| **最终 commit SHA** | `561f1b70b578288be1756dbf22b015e5abe2bc22` |
+| **最终 commit SHA** | 本仓库 `main` 分支的最新提交 —— 取 `git rev-parse HEAD`，或见 [commits/main](https://github.com/chloeshi99/agent-content-plan/commits/main) |
 | **仓库可见性** | Public（公开可读，评审账号无需授权） |
 | **默认分支** | `main` |
 
-> 最终 SHA 以本 README 所在提交为准；如需复核：
-> `git rev-parse HEAD` 或访问
-> [commits/main](https://github.com/chloeshi99/agent-content-plan/commits/main)。
+> 说明：commit SHA 无法在自身所在的提交内容中预先写入（写入即改变 SHA）。
+> 因此以 `main` 分支最新提交为准，上面的链接会直接显示当前 SHA；
+> 提交表单中填写 `git rev-parse HEAD` 的输出即可。
 
 ### 从零复现
 
