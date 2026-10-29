@@ -214,20 +214,31 @@ python -m scripts.show_trace examples/traces/budget_overrun.jsonl
 
 ## 提交信息
 
-- **题号**：`项目2`（内容任务规划 Agent）
-- **GitHub URL**：推送后填写 `https://github.com/<你的账号>/<仓库名>`
-- **最终 commit SHA**：`git rev-parse HEAD` 的输出（推送后填写）
+| 字段 | 值 |
+|---|---|
+| **题号** | `项目2` —— 内容任务规划 Agent |
+| **GitHub URL** | https://github.com/chloeshi99/agent-content-plan |
+| **最终 commit SHA** | `561f1b70b578288be1756dbf22b015e5abe2bc22` |
+| **仓库可见性** | Public（公开可读，评审账号无需授权） |
+| **默认分支** | `main` |
+
+> 最终 SHA 以本 README 所在提交为准；如需复核：
+> `git rev-parse HEAD` 或访问
+> [commits/main](https://github.com/chloeshi99/agent-content-plan/commits/main)。
+
+### 从零复现
 
 ```bash
-git init
-git add .
-git commit -m "feat: 内容任务规划 Agent（ReAct + 预算重规划 + 失败续跑）"
-git remote add origin <你的仓库地址>
-git push -u origin main
+git clone https://github.com/chloeshi99/agent-content-plan.git
+cd agent-content-plan
+pip install -r requirements.txt
 
-# 取得最终 commit SHA（提交表单填写此值）
-git rev-parse HEAD
+python -m src.cli --case all            # 8 个用例（含全部验收点）
+python -m pytest tests -q               # 70 个测试
+python -m scripts.check_delivery         # 53 项交付自检
+python -m scripts.check_secrets          # 密钥/隐私自查
 ```
 
+无需任何环境变量、无需 API Key、无需联网 —— 默认走离线 Mock 决策通道。
+
 仓库不含任何真实密钥或隐私数据（`python -m scripts.check_secrets` 可自检）。
-私有仓库请确保评审账号可读。
