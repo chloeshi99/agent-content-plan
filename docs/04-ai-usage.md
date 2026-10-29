@@ -157,11 +157,28 @@ python -m src.cli --topic "品牌推广" --budget 10 --deadline 2026-11-30
    - 失败步骤是否被如实记为 `failed`（逐条检查 `examples/outputs/*.json`）；
    - 续跑是否真的复用了成功步骤（检查 `reused_steps` 与检索只发生一次）；
    - 重复执行是否只产生一份方案（检查方案表行数）。
-4. **AI 曾犯的错误与修复**（见 `05-retrospective.md`）：
+4. **AI 曾犯的错误与修复**（详见 `05-retrospective.md` 第 1 节）：
    - 重试计数 off-by-one；
    - `fail_times=0` 被误判为成功；
    - 替代方案按「最便宜」排序，导致有价值的素材被丢弃；
    - 重规划后素材重复；
    - 状态写回覆盖了模型自己的选材决定；
    - 工具契约被一个空列表影子覆盖（Mock 不用该字段，真实模型通道会失效）。
-5. **可复现性**：全部结论可用仓库内命令复现，不依赖任何外部服务。
+5. **逐条核对考核要求后补上的缺口**（人工复核 AI 初版后发现并修复）：
+
+   | 缺口 | 补法 | 验证 |
+   |---|---|---|
+   | 交付结果缺「任务计划」「工具结果」 | 最终结果新增 `plan_script` / `tool_results` / `cost_breakdown` 字段 | `tests/test_delivery_result.py` |
+   | 缺输入用例没有运行记录（但输出引用了 trace 文件） | 前置校验被拒时也写一条 trace | `examples/traces/missing_*.jsonl` |
+   | 步数上限只有实现、没有断言 | 新增 `tests/test_loop.py`（7 项） | `pytest tests/test_loop.py` |
+   | 未记录实际用时与未完成部分 | `docs/05-retrospective.md` 新增第 0 节 | 人工复核 |
+   | 框架取舍说明过于简略 | `docs/02-solution.md` 第 6.1 节展开 | 人工复核 |
+   | 工具契约无独立断言 | 新增 `tests/test_contracts.py` | `pytest tests/test_contracts.py` |
+
+6. **可复现性**：全部结论可用仓库内命令复现，不依赖任何外部服务。
+
+### 8.1 边界重申
+
+离线 Mock 只验证**流程与工具契约**，**不证明真实模型的决策效果**。
+本仓库的所有测试与运行记录都不应被解读为「真实模型能做到这样」。
+真实模型通道的代码路径完整，但本次提交未执行（仓库不含密钥）。

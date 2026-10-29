@@ -9,6 +9,9 @@
 
 **题号**：`项目2` · 内容任务规划 Agent
 
+**技术选择**：原生实现（Python 3.10+ 标准库），未使用 LangGraph / ADK / AgentScope。
+取舍理由见 [docs/02-solution.md](docs/02-solution.md) 第 6 节。
+
 ## 评审入口（建议从这里开始）
 
 | 我想看什么 | 去哪里 |
