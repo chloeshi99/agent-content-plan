@@ -1,0 +1,1 @@
+{"step": 1, "action": "incomplete", "tool": null, "args": {"topic": "校园活动", "budget": null, "deadline": "2026-11-30"}, "result_summary": "{\"type\": \"missing_input\", \"missing\": [\"budget\"]}", "next_action": "结束", "rationale": "缺少必要输入（budget），无法开始规划。预算与截止时间是硬性约束，不能用默认值替代。", "decided_by": "precheck.missing_input", "tool_error": null}

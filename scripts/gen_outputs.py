@@ -68,6 +68,20 @@ def main() -> int:
                 "gap": final.get("gap"),
                 "reused_steps": final.get("reused_steps"),
                 "reasoning": final.get("reasoning"),
+                # 交付结果：任务计划 / 工具结果 / 费用合计
+                "plan_script": final.get("plan_script"),
+                "tool_results": [
+                    {
+                        "step": t.get("step"),
+                        "tool": t.get("tool"),
+                        "args": t.get("args"),
+                        "status": t.get("status"),
+                        "result_summary": t.get("result_summary"),
+                        "error": t.get("error"),
+                    }
+                    for t in (final.get("tool_results") or [])
+                ],
+                "cost_breakdown": final.get("cost_breakdown"),
             },
             "runs": [
                 {

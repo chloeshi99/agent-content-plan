@@ -27,7 +27,7 @@ $ python -m pytest tests -q
 ........................................................                 [100%]
 ```
 
-**59 个测试全部通过，0 失败。**
+**70 个测试全部通过，0 失败。**
 
 | 测试文件 | 数量 | 覆盖内容 |
 |---|---|---|
@@ -35,11 +35,32 @@ $ python -m pytest tests -q
 | `tests/test_tools.py` | 11 | 工具契约、错误暴露、故障注入（永久/瞬时）、幂等保存 |
 | `tests/test_storage.py` | 4 | 方案幂等、步骤状态持久化、运行级元数据 |
 | `tests/test_contracts.py` | 3 | 四个工具契约完整、无发布类工具 |
+| `tests/test_delivery_result.py` | 4 | **交付结果五项字段齐全**、失败项如实标记 |
 | `tests/test_cases.py` | 24 | 端到端用例断言（对应必须验收的 5 项 + 加分项） |
 | `tests/test_react.py` | 8 | **观测驱动决策证明**、失败不记成功、成功结果保留 |
+| `tests/test_loop.py` | 7 | **步数上限**、未完成状态、越权保护、trace 字段完整性 |
 | `tests/test_cli.py` | 2 | CLI 入口冒烟 |
 
 ## 3. 必须验收的五项 —— 预期 vs 实际
+
+### 3.0 交付结果字段
+
+题目要求「交付结果：任务计划、步骤状态、工具结果、费用合计、已保存方案或未完成原因」。
+最终结果对象中对应的字段：
+
+| 交付项 | 字段 | 示例（`normal_complete`） |
+|---|---|---|
+| 任务计划 | `plan_script` | 方案脚本文本（目标 / 选用资产 / 投放节奏 / 组合说明） |
+| 步骤状态 | `steps[]` | `[{step, status}]`，status ∈ `succeeded`/`failed` |
+| 工具结果 | `tool_results[]` | 每次调用的 `step/tool/args/status/result_summary/error` |
+| 费用合计 | `cost_breakdown` | `{tool_cost, asset_cost, total_cost, budget, over_budget, breakdown[]}` |
+| 已保存方案 | `plan_status` + `plan_id` | `saved` + `P-校园开放日-4c099f68` |
+| 未完成原因 | `outcome` + `incomplete_reason` + `gap` + `reasoning` | `incomplete` + `missing_input:budget` + `{type, missing}` |
+
+断言见 `tests/test_delivery_result.py`（4 项），
+自检项见 `python -m scripts.check_delivery` 的「交付结果」分组。
+
+### 3.1 验收对照
 
 数据来源：[examples/outputs/summary.md](../examples/outputs/summary.md)（自动生成）。
 
@@ -101,9 +122,9 @@ $ python -m pytest tests -q
 | 场景类别 | 用例 | 实际输出 | 运行记录 |
 |---|---|---|---|
 | **正常** | `normal_complete` | `examples/outputs/normal_complete.json` | `examples/traces/normal_complete.jsonl` |
-| **预算超限** | `budget_overrun` | `examples/outputs/budget_overrun.jsonl` → `.json` | `examples/traces/budget_overrun.jsonl` |
-| **信息不足（缺预算）** | `missing_budget` | `examples/outputs/missing_budget.json` | `examples/traces/missing_budget.jsonl` |
-| **信息不足（缺截止时间）** | `missing_deadline` | `examples/outputs/missing_deadline.json` | `examples/traces/missing_deadline.jsonl` |
+| **预算超限** | `budget_overrun` | `examples/outputs/budget_overrun.json` | `examples/traces/budget_overrun.jsonl` |
+| **信息不足（缺预算）** | `missing_budget` | `examples/outputs/missing_budget.json` | `examples/traces/missing_budget.jsonl`（前置校验被拒，0 次工具调用） |
+| **信息不足（缺截止时间）** | `missing_deadline` | `examples/outputs/missing_deadline.json` | `examples/traces/missing_deadline.jsonl`（前置校验被拒，0 次工具调用） |
 | **工具失败** | `tool_failure` | `examples/outputs/tool_failure.json` | `examples/traces/tool_failure.jsonl` |
 | **无可行方案** | `no_feasible_plan` | `examples/outputs/no_feasible_plan.json` | `examples/traces/no_feasible_plan.jsonl` |
 | **重复执行** | `duplicate_execution` | `examples/outputs/duplicate_execution.json` | `examples/traces/duplicate_execution.jsonl` |
@@ -131,6 +152,39 @@ $ python -m pytest tests -q
 
 可读查看：`python -m scripts.show_trace examples/traces/budget_overrun.jsonl`。
 
+### 4.2 两条以上执行路径的对照
+
+题目要求「至少提供两条执行路径的运行记录，体现模型根据不同工具结果调整动作」。
+本项目提供 **8 条**路径，其中三条形成鲜明对照：
+
+| 路径 | 触发差异的观测 | 动作序列差异 |
+|---|---|---|
+| **A 正常** `normal_complete` | 估算 `over_budget=false` | 检索 → 脚本 → 估算 → 保存（4 步） |
+| **B 超限** `budget_overrun` | 估算 `over_budget=true` | 检索 → 脚本 → 估算(12) → **再估算(8)** → 保存（5 步） |
+| **C 工具失败** `tool_failure` | 工具返回 `error` | 检索 → 脚本(✗) → 脚本(✗) → **脚本(换素材)** → 估算 → 保存（6 步） |
+
+三条路径的**前三步动作相同**，分叉点完全由观测结果决定：
+
+```
+A: 1 search → 2 script → 3 estimate(over_budget=false) → 4 save → finish
+B: 1 search → 2 script → 3 estimate(over_budget=true)  → 4 estimate(重估) → 5 save → finish
+C: 1 search → 2 script(失败) → 3 script(重试,失败) → 4 script(换素材) → 5 estimate → 6 save → finish
+```
+
+每条路径的 `decided_by` 字段分别指向
+`observation.over_budget`（B）与 `observation.error.detail.failed_asset_id`（C），
+可逐行核对「分叉是由哪个观测字段造成的」。
+
+### 4.3 步数 / 工具调用上限
+
+题目要求「项目须设置执行步数或工具调用次数上限，达到上限时返回明确的未完成状态」。
+
+- 上限：`MAX_TOOL_CALLS`（默认 10），见 `src/config.py` 与 `src/agent/loop.py`。
+- 达到上限时返回：`outcome="incomplete"`、`incomplete_reason="max_tool_calls_exceeded"`、
+  `plan_status="not_saved"`、`reasoning` 说明原因。
+- 断言：`tests/test_loop.py::test_tool_call_cap_returns_incomplete`、
+  `test_cap_is_not_exceeded`、`test_incomplete_state_explains_reason`。
+
 ## 5. ReAct 决策要求的验证
 
 题目原文：「高分依据是合理重规划；无状态、无失败处理只能证明完成串行调用。」
@@ -147,6 +201,21 @@ $ python -m pytest tests -q
 | `test_replan_keeps_successful_steps` | 重规划时检索只发生一次（成功结果被保留） |
 | `test_step_state_persisted_for_resume` | 步骤状态真实落库，可被续跑读回 |
 | `test_no_publish_action_exists` | 工具层不存在发布/投放动作 |
+
+循环层的结构断言见 `tests/test_loop.py`（7 项）：
+
+| 测试 | 证明什么 |
+|---|---|
+| `test_tool_call_cap_returns_incomplete` | 达到工具调用上限返回 `outcome=incomplete` + `max_tool_calls_exceeded` |
+| `test_cap_is_not_exceeded` | 工具调用次数不超过上限 |
+| `test_incomplete_state_explains_reason` | 未完成时说明原因，不静默结束 |
+| `test_empty_tool_name_returns_incomplete` | 模型给出空工具名不崩溃 |
+| `test_published_always_false` | 任何路径 `published=false` |
+| `test_trace_entries_have_required_fields` | trace 含题目要求的五个字段 |
+| `test_trace_written_to_file` | trace 可落盘为 jsonl |
+
+工具契约的断言见 `tests/test_contracts.py`（3 项）：四个工具名完整、每个工具都有
+`required` 字段、契约中不存在发布类工具。
 
 `budget_overrun` 的完整动作序列（来自 trace）：
 
@@ -209,6 +278,10 @@ $ python -m pytest tests -q
    在「内容投入不被浪费」与「绝对最便宜」之间做了取舍。
 
 6. **单主题串行流程**，没有多 Agent、并行检索或分布式调度（题目明示非必需）。
+
+7. **实际用时约 3 小时 25 分钟，未完成部分见
+   [docs/05-retrospective.md](05-retrospective.md) 第 0 节**（含逐项原因与后续计划）。
+   核心链路（选材→脚本→估算→保存 + 重规划 + 续跑）已全部完成并可复现。
 
 ## 8. AI 辅助开发说明
 

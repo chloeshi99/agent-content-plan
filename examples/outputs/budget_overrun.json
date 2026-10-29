@@ -16,7 +16,99 @@
     "incomplete_reason": null,
     "gap": null,
     "reused_steps": [],
-    "reasoning": "方案保存成功（仅保存草稿，未做任何真实提交）。"
+    "reasoning": "方案保存成功（仅保存草稿，未做任何真实提交）。",
+    "plan_script": "# 品牌推广 内容活动方案\n\n## 一、目标\n围绕「品牌推广」完成一次可投放的内容活动，覆盖多形态素材组合。\n\n## 二、选用的内容资产\n- **信息流广告素材包**（A05 / ad_pack）：多尺寸信息流广告素材包，含主图与短文案组合。\n- **博客长文-行业洞察**（A06 / article）：带数据支撑的行业洞察长文，适合拉新与建立专业形象。\n\n## 三、投放节奏\n1. 预热期：以短视频脚本切入，建立话题\n2. 引爆期：主视觉与图文承接搜索与推荐流量\n3. 长尾期：长文沉淀内容资产，承接深度阅读\n\n## 四、组合说明\n本方案共选用 2 项内容资产：信息流广告素材包（A05）、博客长文-行业洞察（A06）。\n各资产承担不同角色，形成从吸引到转化的完整链路。",
+    "tool_results": [
+      {
+        "step": 1,
+        "tool": "search_materials",
+        "args": {
+          "topic": "品牌推广",
+          "limit": 5
+        },
+        "status": "succeeded",
+        "result_summary": "{\"topic\": \"品牌推广\", \"candidates\": [{\"asset_id\": \"A05\", \"title\": \"信息流广告素材包\", \"type\": \"ad_pack\", \"tags\": [\"广告\", \"投放\", \"电商\"], \"summary\": \"多尺寸信息流广告素材包，含主图与短文案组合。\", \"cost\": 4, \"duration_min\": 60, \"relevance\": 5}, {\"asset_id\": \"A06\", \"title\": \"博客长文-行业洞察\", \"type\": \"article\", \"tags\": [\"长文\", \"洞察\", \"通用\"], \"summary\": \"带数据支撑的行业洞察长文，适合拉新与建立专业形象。\", \"cost\": 5, \"duration_min\": 110, \"relevance\": 5}], \"candidate_count\": 2, \"total_materials\": 9, \"note\": \"按相关度排序返回候选素材，费用由服务端给出\"}",
+        "error": null
+      },
+      {
+        "step": 2,
+        "tool": "generate_script",
+        "args": {
+          "topic": "品牌推广",
+          "assets": [
+            "A05",
+            "A06"
+          ]
+        },
+        "status": "succeeded",
+        "result_summary": "{\"topic\": \"品牌推广\", \"assets\": [\"A05\", \"A06\"], \"script\": \"# 品牌推广 内容活动方案\\n\\n## 一、目标\\n围绕「品牌推广」完成一次可投放的内容活动，覆盖多形态素材组合。\\n\\n## 二、选用的内容资产\\n- **信息流广告素材包**（A05 / ad_pack）：多尺寸信息流广告素材包，含主图与短文案组合。\\n- **博客长文-行业洞察**（A06 / article）：带数据支撑的行业洞察长文，适合拉新与建立专业形象。\\n\\n## 三、投放节奏\\n1. 预热期：以短视频脚本切入，建立话题\\n2. 引爆期：主视觉与图文承接搜索与推荐流量\\n3. 长尾期：长文沉淀内容资产，承接深度阅读\\n\\n## 四、组合说明\\n本方案共选用 2 项内容资产：信息流广告素材包（A05）、博客长文-行业洞察（A06）。\\n各资产承担不同角色，形成从吸引到转化的完整链路。\", \"cached\": false, \"sections\": [{\"asset_id\": \"A05\", \"title\": \"信息流广告素材包\", \"type\": \"ad_pack\", \"summary\": \"多尺寸信息流广告素材包，含主图与短文案组合。\"}, {\"asset_id\": \"A06\", \"title\": \"博客长文-行业洞察\", \"type\": \"article\", \"summary\": \"带数据支撑的行业洞察长文，适合拉新与建立专业形象。\"}]}",
+        "error": null
+      },
+      {
+        "step": 3,
+        "tool": "estimate_cost",
+        "args": {
+          "assets": [
+            "A05",
+            "A06"
+          ],
+          "budget": 10,
+          "deadline": "2026-11-30"
+        },
+        "status": "succeeded",
+        "result_summary": "{\"assets\": [\"A05\", \"A06\"], \"tool_cost\": 3, \"asset_cost\": 9, \"total_cost\": 12, \"total_duration_min\": 225, \"budget\": 10, \"over_budget\": true, \"over_budget_by\": 2, \"breakdown\": [{\"asset_id\": \"A05\", \"cost\": 4, \"duration_min\": 60, \"title\": \"信息流广告素材包\"}, {\"asset_id\": \"A06\", \"cost\": 5, \"duration_min\": 110, \"title\": \"博客长文-行业洞察\"}], \"notes\": [], \"deadline_ok\": true, \"deadline_reason\": \"方案耗时 225 分钟，可在截止时间前完成（可用 45540 分钟）\", \"deadline\": \"2026-11-30\", \"now\": \"2026-10-29T09:00:00\", \"alternatives\": [{\"assets\": [\"A06\"], \"total_cost\": 8, \"total_duration_min\": 165, \"retained\": 1, \"retained_value\": 5, \"saved\": 4}, {\"assets\": [\"A05\"], \"total_cost\": 7, \"total_duration_min\": 115, \"retained\": 1, \"retained_value\": 4, \"saved\": 5}, {\"assets\": [\"A05\", \"A09\"], \"total_cost\": 9, \"total_duration_min\": 145, \"retained\": 1, \"retained_value\": 4, \"saved\": 3}, {\"assets\": [\"A05\", \"A03\"], \"total_cost\": 10, \"total_duration_min\": 160, \"retained\": 1, \"retained_value\": 4, \"saved\": 2}, {\"assets\": [\"A09\"], \"total_cost\": 5, \"total_duration_min\": 85, \"retained\": 0, \"retained_value\": 0, \"saved\": 7}], \"alternatives_hint\": \"超出预算 2 个单位。服务端已给出 5 个可行的替代组合，请选择其一重新估算。\"}",
+        "error": null
+      },
+      {
+        "step": 4,
+        "tool": "estimate_cost",
+        "args": {
+          "assets": [
+            "A06"
+          ],
+          "budget": 10,
+          "deadline": "2026-11-30"
+        },
+        "status": "succeeded",
+        "result_summary": "{\"assets\": [\"A06\"], \"tool_cost\": 3, \"asset_cost\": 5, \"total_cost\": 8, \"total_duration_min\": 165, \"budget\": 10, \"over_budget\": false, \"over_budget_by\": 0, \"breakdown\": [{\"asset_id\": \"A06\", \"cost\": 5, \"duration_min\": 110, \"title\": \"博客长文-行业洞察\"}], \"notes\": [], \"deadline_ok\": true, \"deadline_reason\": \"方案耗时 165 分钟，可在截止时间前完成（可用 45540 分钟）\", \"deadline\": \"2026-11-30\", \"now\": \"2026-10-29T09:00:00\", \"alternatives\": [], \"alternatives_hint\": \"在预算内\"}",
+        "error": null
+      },
+      {
+        "step": 5,
+        "tool": "save_plan",
+        "args": {
+          "topic": "品牌推广",
+          "assets": [
+            "A06"
+          ],
+          "script": "# 品牌推广 内容活动方案\n\n## 一、目标\n围绕「品牌推广」完成一次可投放的内容活动，覆盖多形态素材组合。\n\n## 二、选用的内容资产\n- **信息流广告素材包**（A05 / ad_pack）：多尺寸信息流广告素材包，含主图与短文案组合。\n- **博客长文-行业洞察**（A06 / article）：带数据支撑的行业洞察长文，适合拉新与建立专业形象。\n\n## 三、投放节奏\n1. 预热期：以短视频脚本切入，建立话题\n2. 引爆期：主视觉与图文承接搜索与推荐流量\n3. 长尾期：长文沉淀内容资产，承接深度阅读\n\n## 四、组合说明\n本方案共选用 2 项内容资产：信息流广告素材包（A05）、博客长文-行业洞察（A06）。\n各资产承担不同角色，形成从吸引到转化的完整链路。",
+          "total_cost": 8,
+          "total_duration_min": 165
+        },
+        "status": "succeeded",
+        "result_summary": "{\"status\": \"saved\", \"plan_id\": \"P-品牌推广-f840f072\", \"detail\": \"方案已写入本地方案库\", \"topic\": \"品牌推广\", \"assets\": [\"A06\"], \"total_cost\": 8, \"total_duration_min\": 165}",
+        "error": null
+      }
+    ],
+    "cost_breakdown": {
+      "assets": [
+        "A06"
+      ],
+      "tool_cost": 3,
+      "asset_cost": 5,
+      "total_cost": 8,
+      "budget": 10,
+      "over_budget": false,
+      "total_duration_min": 165,
+      "breakdown": [
+        {
+          "asset_id": "A06",
+          "cost": 5,
+          "duration_min": 110,
+          "title": "博客长文-行业洞察"
+        }
+      ]
+    }
   },
   "runs": [
     {

@@ -19,7 +19,10 @@
       ]
     },
     "reused_steps": [],
-    "reasoning": "缺少必要输入（budget），无法开始规划。预算与截止时间是硬性约束，不能用默认值替代。"
+    "reasoning": "缺少必要输入（budget），无法开始规划。预算与截止时间是硬性约束，不能用默认值替代。",
+    "plan_script": "",
+    "tool_results": [],
+    "cost_breakdown": {}
   },
   "runs": [
     {

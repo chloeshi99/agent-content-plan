@@ -58,7 +58,7 @@ class PlanRunner:
         if deadline is None or not str(deadline).strip():
             missing.append("deadline")
         if missing:
-            return {
+            result = {
                 "topic": topic,
                 "outcome": "incomplete",
                 "plan_status": "not_saved",
@@ -76,7 +76,25 @@ class PlanRunner:
                 "max_tool_calls": self.config.max_tool_calls,
                 "steps": [],
                 "reused_steps": [],
+                # 交付结果契约：未完成时这几项为空，但字段结构与完成时一致
+                "plan_script": "",
+                "tool_results": [],
+                "cost_breakdown": {},
             }
+            # 前置校验被拒也要留运行记录，便于评审核对「未调用任何工具」
+            if trace_path is not None:
+                write_trace(trace_path, {
+                    "step": 1,
+                    "action": "incomplete",
+                    "tool": None,
+                    "args": {"topic": topic, "budget": budget, "deadline": deadline},
+                    "result_summary": json.dumps(result.get("gap"), ensure_ascii=False),
+                    "next_action": "结束",
+                    "rationale": result["reasoning"],
+                    "decided_by": "precheck.missing_input",
+                    "tool_error": None,
+                })
+            return result
 
         # ---- 工具上下文 ----
         ctx = ToolContext(self.catalog, store=self.store, now=self.config.now)

@@ -60,6 +60,42 @@ check("验证材料：examples/outputs（实际输出）", has("examples/outputs
 traces = list((ROOT / "examples" / "traces").glob("*.jsonl")) if has("examples/traces") else []
 check("验证材料：examples/traces（运行记录）", len(traces) >= 3, f"{len(traces)} 个 trace 文件")
 
+# 每个用例都应有运行记录（题目要求覆盖全部验收点的运行记录）
+try:
+    from src.config import Config as _Cfg
+    _case_names = list(_Cfg.load().load_json("cases.json")["cases"].keys())
+except Exception:
+    _case_names = []
+missing_trace = [c for c in _case_names
+                 if not (ROOT / "examples" / "traces" / f"{c}.jsonl").exists()]
+check("验证材料：每个用例都有运行记录", not missing_trace, f"缺少: {missing_trace}")
+
+# 步数 / 工具调用上限（题目明确要求）
+check("约束：设置了工具调用次数上限",
+      "MAX_TOOL_CALLS" in (ROOT / ".env.example").read_text(encoding="utf-8"))
+loop_src = (ROOT / "src" / "agent" / "loop.py").read_text(encoding="utf-8")
+check("约束：达到上限返回明确未完成状态",
+      "max_tool_calls_exceeded" in loop_src and '"incomplete"' in loop_src)
+
+# ---------------- 交付结果字段（题目：任务计划/步骤状态/工具结果/费用合计/已保存方案或未完成原因） ----------------
+d = load("examples/outputs/normal_complete.json")
+if d:
+    a = d["actual"]
+    check("交付结果：任务计划（脚本正文）", bool(a.get("plan_script")))
+    check("交付结果：步骤状态", bool((d.get("runs") or [{}])[0].get("steps")))
+    check("交付结果：工具结果", len(a.get("tool_results") or []) > 0,
+          f"{len(a.get('tool_results') or [])} 条")
+    cb = a.get("cost_breakdown") or {}
+    check("交付结果：费用合计", cb.get("total_cost") is not None
+          and cb.get("total_cost") == cb.get("tool_cost", 0) + cb.get("asset_cost", 0),
+          f"total={cb.get('total_cost')}")
+    check("交付结果：已保存方案", a.get("plan_status") == "saved" and bool(a.get("plan_id")))
+
+d = load("examples/outputs/missing_budget.json")
+if d:
+    a = d["actual"]
+    check("交付结果：未完成原因", bool(a.get("incomplete_reason")) and bool(a.get("reasoning")))
+
 # ---------------- 必须验收的五个场景 ----------------
 ACCEPT = {
     "normal_complete": ("正常完成", "completed"),

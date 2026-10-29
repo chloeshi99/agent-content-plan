@@ -206,7 +206,49 @@ class ReActAgent:
         final["published"] = False
         final["steps"] = self._step_summary()
         final["reused_steps"] = state.get("reused_steps", [])
+        # 交付结果要求：任务计划（脚本正文）、工具结果、费用合计
+        final["plan_script"] = state.get("script", "")
+        final["tool_results"] = self._tool_results()
+        final["cost_breakdown"] = self._cost_breakdown(state)
         return final
+
+    # ------------------------------------------------------------------
+    def _tool_results(self) -> list[dict[str, Any]]:
+        """每个工具调用的结果摘要（题目交付结果中的「工具结果」）。"""
+        out = []
+        for e in self.trace:
+            if e.get("action") != "tool":
+                continue
+            out.append({
+                "step": e.get("step"),
+                "tool": e.get("tool"),
+                "args": e.get("args") or {},
+                "status": "failed" if e.get("tool_error") else "succeeded",
+                "result_summary": e.get("result_summary") or "",
+                "error": e.get("tool_error"),
+            })
+        return out
+
+    # ------------------------------------------------------------------
+    def _cost_breakdown(self, state: dict[str, Any]) -> dict[str, Any]:
+        """费用合计的构成（题目审核要点：核对预算计算）。"""
+        from ..domain import costing
+
+        catalog = getattr(getattr(self.registry, "ctx", None), "catalog", None) or {}
+        if not catalog:
+            return {}
+        assets = list(state.get("assets") or [])
+        est = costing.estimate_cost(catalog, assets, state.get("budget"))
+        return {
+            "assets": assets,
+            "tool_cost": est.tool_cost,
+            "asset_cost": est.asset_cost,
+            "total_cost": est.total_cost,
+            "budget": state.get("budget"),
+            "over_budget": est.over_budget,
+            "total_duration_min": est.total_duration_min,
+            "breakdown": est.breakdown,
+        }
 
     # ------------------------------------------------------------------
     def _user_prompt(self, state: dict[str, Any]) -> str:
@@ -344,6 +386,10 @@ class ReActAgent:
             "published": False,
             "reasoning": f"执行未完成：{reason}（已用工具调用 {tool_calls} 次）",
             "incomplete_reason": reason,
+            # 交付结果契约：未完成时这几项为空，但字段结构与完成时一致
+            "plan_script": state.get("script") or "",
+            "tool_results": self._tool_results(),
+            "cost_breakdown": self._cost_breakdown(state),
         }
 
     def _record_trace(self, state: dict, action: str, rationale: str = "", tool: str | None = None,

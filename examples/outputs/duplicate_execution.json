@@ -16,7 +16,83 @@
     "incomplete_reason": null,
     "gap": null,
     "reused_steps": [],
-    "reasoning": "方案保存返回 duplicate：相同方案已存在，未重复创建。"
+    "reasoning": "方案保存返回 duplicate：相同方案已存在，未重复创建。",
+    "plan_script": "# 校园开放日 内容活动方案\n\n## 一、目标\n围绕「校园开放日」完成一次可投放的内容活动，覆盖多形态素材组合。\n\n## 二、选用的内容资产\n- **校园活动海报**（A08 / poster）：线下校园活动主海报，可用于社团纳新与讲座预热。\n\n## 三、投放节奏\n1. 预热期：以短视频脚本切入，建立话题\n2. 引爆期：主视觉与图文承接搜索与推荐流量\n3. 长尾期：长文沉淀内容资产，承接深度阅读\n\n## 四、组合说明\n本方案共选用 1 项内容资产：校园活动海报（A08）。\n各资产承担不同角色，形成从吸引到转化的完整链路。",
+    "tool_results": [
+      {
+        "step": 1,
+        "tool": "search_materials",
+        "args": {
+          "topic": "校园开放日",
+          "limit": 5
+        },
+        "status": "succeeded",
+        "result_summary": "{\"topic\": \"校园开放日\", \"candidates\": [{\"asset_id\": \"A08\", \"title\": \"校园活动海报\", \"type\": \"poster\", \"tags\": [\"活动\", \"海报\", \"校园\"], \"summary\": \"线下校园活动主海报，可用于社团纳新与讲座预热。\", \"cost\": 4, \"duration_min\": 80, \"relevance\": 4}], \"candidate_count\": 1, \"total_materials\": 9, \"note\": \"按相关度排序返回候选素材，费用由服务端给出\"}",
+        "error": null
+      },
+      {
+        "step": 2,
+        "tool": "generate_script",
+        "args": {
+          "topic": "校园开放日",
+          "assets": [
+            "A08"
+          ]
+        },
+        "status": "succeeded",
+        "result_summary": "{\"topic\": \"校园开放日\", \"assets\": [\"A08\"], \"script\": \"# 校园开放日 内容活动方案\\n\\n## 一、目标\\n围绕「校园开放日」完成一次可投放的内容活动，覆盖多形态素材组合。\\n\\n## 二、选用的内容资产\\n- **校园活动海报**（A08 / poster）：线下校园活动主海报，可用于社团纳新与讲座预热。\\n\\n## 三、投放节奏\\n1. 预热期：以短视频脚本切入，建立话题\\n2. 引爆期：主视觉与图文承接搜索与推荐流量\\n3. 长尾期：长文沉淀内容资产，承接深度阅读\\n\\n## 四、组合说明\\n本方案共选用 1 项内容资产：校园活动海报（A08）。\\n各资产承担不同角色，形成从吸引到转化的完整链路。\", \"cached\": false, \"sections\": [{\"asset_id\": \"A08\", \"title\": \"校园活动海报\", \"type\": \"poster\", \"summary\": \"线下校园活动主海报，可用于社团纳新与讲座预热。\"}]}",
+        "error": null
+      },
+      {
+        "step": 3,
+        "tool": "estimate_cost",
+        "args": {
+          "assets": [
+            "A08"
+          ],
+          "budget": 20,
+          "deadline": "2026-11-20"
+        },
+        "status": "succeeded",
+        "result_summary": "{\"assets\": [\"A08\"], \"tool_cost\": 3, \"asset_cost\": 4, \"total_cost\": 7, \"total_duration_min\": 135, \"budget\": 20, \"over_budget\": false, \"over_budget_by\": 0, \"breakdown\": [{\"asset_id\": \"A08\", \"cost\": 4, \"duration_min\": 80, \"title\": \"校园活动海报\"}], \"notes\": [], \"deadline_ok\": true, \"deadline_reason\": \"方案耗时 135 分钟，可在截止时间前完成（可用 31140 分钟）\", \"deadline\": \"2026-11-20\", \"now\": \"2026-10-29T09:00:00\", \"alternatives\": [], \"alternatives_hint\": \"在预算内\"}",
+        "error": null
+      },
+      {
+        "step": 4,
+        "tool": "save_plan",
+        "args": {
+          "topic": "校园开放日",
+          "assets": [
+            "A08"
+          ],
+          "script": "# 校园开放日 内容活动方案\n\n## 一、目标\n围绕「校园开放日」完成一次可投放的内容活动，覆盖多形态素材组合。\n\n## 二、选用的内容资产\n- **校园活动海报**（A08 / poster）：线下校园活动主海报，可用于社团纳新与讲座预热。\n\n## 三、投放节奏\n1. 预热期：以短视频脚本切入，建立话题\n2. 引爆期：主视觉与图文承接搜索与推荐流量\n3. 长尾期：长文沉淀内容资产，承接深度阅读\n\n## 四、组合说明\n本方案共选用 1 项内容资产：校园活动海报（A08）。\n各资产承担不同角色，形成从吸引到转化的完整链路。",
+          "total_cost": 7,
+          "total_duration_min": 135
+        },
+        "status": "succeeded",
+        "result_summary": "{\"status\": \"duplicate\", \"plan_id\": \"P-校园开放日-4c099f68\", \"detail\": \"相同方案已存在，未重复创建\", \"topic\": \"校园开放日\", \"assets\": [\"A08\"], \"total_cost\": 7, \"total_duration_min\": 135}",
+        "error": null
+      }
+    ],
+    "cost_breakdown": {
+      "assets": [
+        "A08"
+      ],
+      "tool_cost": 3,
+      "asset_cost": 4,
+      "total_cost": 7,
+      "budget": 20,
+      "over_budget": false,
+      "total_duration_min": 135,
+      "breakdown": [
+        {
+          "asset_id": "A08",
+          "cost": 4,
+          "duration_min": 80,
+          "title": "校园活动海报"
+        }
+      ]
+    }
   },
   "runs": [
     {

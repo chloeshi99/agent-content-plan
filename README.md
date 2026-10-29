@@ -36,7 +36,7 @@ pip install -r requirements.txt
 # 2. 运行全部业务用例（覆盖必须验收的 5 项 + 加分项）
 python -m src.cli --case all
 
-# 3. 运行测试套件（59 passed）
+# 3. 运行测试套件（70 passed）
 python -m pytest tests -q
 
 # 4. 重新生成实际输出与运行记录
@@ -104,6 +104,17 @@ python -m scripts.show_trace examples/traces/budget_overrun.jsonl
 | 失败步骤续跑（加分） | `steps` 表复用成功结果 + `run_meta` 继承失败计数 |
 | 步数上限 | `MAX_TOOL_CALLS=10`，达到返回 `outcome=incomplete` |
 
+### 交付结果字段（题目「交付结果」逐项对应）
+
+| 交付项 | 字段 |
+|---|---|
+| 任务计划 | `plan_script` —— 方案脚本文本 |
+| 步骤状态 | `steps[]` —— 每步 `{step, status}` |
+| 工具结果 | `tool_results[]` —— 每次的 `tool/args/status/result_summary/error` |
+| 费用合计 | `cost_breakdown` —— `tool_cost + asset_cost = total_cost`，含 `breakdown[]` 明细 |
+| 已保存方案 | `plan_status` + `plan_id` |
+| 未完成原因 | `outcome` + `incomplete_reason` + `gap` + `reasoning` |
+
 ## ReAct 决策（题目核心要求）
 
 模型在运行时选择动作、执行工具、观察结果、调整下一步：
@@ -170,7 +181,7 @@ python -m scripts.show_trace examples/traces/budget_overrun.jsonl
 │  ├─ tools/impl.py          # 四个工具 + 故障注入
 │  ├─ domain/costing.py      # 费用/时限/替代组合（确定性）
 │  └─ storage/db.py          # plans / steps / run_meta
-├─ tests/                    # 59 个测试
+├─ tests/                    # 70 个测试
 ├─ examples/
 │  ├─ inputs/cases.json      # 输入
 │  ├─ outputs/               # 实际输出 + summary.md
@@ -195,8 +206,14 @@ python -m scripts.show_trace examples/traces/budget_overrun.jsonl
 2. 费用是**模拟单位**，素材为合成数据，不涉及真实货币与真实投放。
 3. 时限判定使用固定「当前时间」（`AGENT_NOW`）以保证结果可复现。
 4. 替代组合是启发式搜索，非全局最优。
+5. 实际用时约 3 小时 25 分钟；**未完成部分逐项列在
+   [docs/05-retrospective.md](docs/05-retrospective.md) 第 0 节**。
 
-## 提交方式
+## 提交信息
+
+- **题号**：`项目2`（内容任务规划 Agent）
+- **GitHub URL**：推送后填写 `https://github.com/<你的账号>/<仓库名>`
+- **最终 commit SHA**：`git rev-parse HEAD` 的输出（推送后填写）
 
 ```bash
 git init
@@ -204,6 +221,10 @@ git add .
 git commit -m "feat: 内容任务规划 Agent（ReAct + 预算重规划 + 失败续跑）"
 git remote add origin <你的仓库地址>
 git push -u origin main
+
+# 取得最终 commit SHA（提交表单填写此值）
+git rev-parse HEAD
 ```
 
 仓库不含任何真实密钥或隐私数据（`python -m scripts.check_secrets` 可自检）。
+私有仓库请确保评审账号可读。

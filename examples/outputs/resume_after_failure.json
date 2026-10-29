@@ -18,7 +18,72 @@
     "reused_steps": [
       "search_materials:1"
     ],
-    "reasoning": "方案保存成功（仅保存草稿，未做任何真实提交）。"
+    "reasoning": "方案保存成功（仅保存草稿，未做任何真实提交）。",
+    "plan_script": "# 社群快讯 内容活动方案\n\n## 一、目标\n围绕「社群快讯」完成一次可投放的内容活动，覆盖多形态素材组合。\n\n## 二、选用的内容资产\n- **社群快讯模板**（A09 / copy_pack）：面向社群分发的快讯模板套件，适合轻量级活动通知与转发。\n\n## 三、投放节奏\n1. 预热期：以短视频脚本切入，建立话题\n2. 引爆期：主视觉与图文承接搜索与推荐流量\n3. 长尾期：长文沉淀内容资产，承接深度阅读\n\n## 四、组合说明\n本方案共选用 1 项内容资产：社群快讯模板（A09）。\n各资产承担不同角色，形成从吸引到转化的完整链路。",
+    "tool_results": [
+      {
+        "step": 1,
+        "tool": "generate_script",
+        "args": {
+          "topic": "社群快讯",
+          "assets": [
+            "A09"
+          ]
+        },
+        "status": "succeeded",
+        "result_summary": "{\"topic\": \"社群快讯\", \"assets\": [\"A09\"], \"script\": \"# 社群快讯 内容活动方案\\n\\n## 一、目标\\n围绕「社群快讯」完成一次可投放的内容活动，覆盖多形态素材组合。\\n\\n## 二、选用的内容资产\\n- **社群快讯模板**（A09 / copy_pack）：面向社群分发的快讯模板套件，适合轻量级活动通知与转发。\\n\\n## 三、投放节奏\\n1. 预热期：以短视频脚本切入，建立话题\\n2. 引爆期：主视觉与图文承接搜索与推荐流量\\n3. 长尾期：长文沉淀内容资产，承接深度阅读\\n\\n## 四、组合说明\\n本方案共选用 1 项内容资产：社群快讯模板（A09）。\\n各资产承担不同角色，形成从吸引到转化的完整链路。\", \"cached\": false, \"sections\": [{\"asset_id\": \"A09\", \"title\": \"社群快讯模板\", \"type\": \"copy_pack\", \"summary\": \"面向社群分发的快讯模板套件，适合轻量级活动通知与转发。\"}]}",
+        "error": null
+      },
+      {
+        "step": 2,
+        "tool": "estimate_cost",
+        "args": {
+          "assets": [
+            "A09"
+          ],
+          "budget": 20,
+          "deadline": "2026-11-30"
+        },
+        "status": "succeeded",
+        "result_summary": "{\"assets\": [\"A09\"], \"tool_cost\": 3, \"asset_cost\": 2, \"total_cost\": 5, \"total_duration_min\": 85, \"budget\": 20, \"over_budget\": false, \"over_budget_by\": 0, \"breakdown\": [{\"asset_id\": \"A09\", \"cost\": 2, \"duration_min\": 30, \"title\": \"社群快讯模板\"}], \"notes\": [], \"deadline_ok\": true, \"deadline_reason\": \"方案耗时 85 分钟，可在截止时间前完成（可用 45540 分钟）\", \"deadline\": \"2026-11-30\", \"now\": \"2026-10-29T09:00:00\", \"alternatives\": [], \"alternatives_hint\": \"在预算内\"}",
+        "error": null
+      },
+      {
+        "step": 3,
+        "tool": "save_plan",
+        "args": {
+          "topic": "社群快讯",
+          "assets": [
+            "A09"
+          ],
+          "script": "# 社群快讯 内容活动方案\n\n## 一、目标\n围绕「社群快讯」完成一次可投放的内容活动，覆盖多形态素材组合。\n\n## 二、选用的内容资产\n- **社群快讯模板**（A09 / copy_pack）：面向社群分发的快讯模板套件，适合轻量级活动通知与转发。\n\n## 三、投放节奏\n1. 预热期：以短视频脚本切入，建立话题\n2. 引爆期：主视觉与图文承接搜索与推荐流量\n3. 长尾期：长文沉淀内容资产，承接深度阅读\n\n## 四、组合说明\n本方案共选用 1 项内容资产：社群快讯模板（A09）。\n各资产承担不同角色，形成从吸引到转化的完整链路。",
+          "total_cost": 5,
+          "total_duration_min": 85
+        },
+        "status": "succeeded",
+        "result_summary": "{\"status\": \"saved\", \"plan_id\": \"P-社群快讯-c6f52ff0\", \"detail\": \"方案已写入本地方案库\", \"topic\": \"社群快讯\", \"assets\": [\"A09\"], \"total_cost\": 5, \"total_duration_min\": 85}",
+        "error": null
+      }
+    ],
+    "cost_breakdown": {
+      "assets": [
+        "A09"
+      ],
+      "tool_cost": 3,
+      "asset_cost": 2,
+      "total_cost": 5,
+      "budget": 20,
+      "over_budget": false,
+      "total_duration_min": 85,
+      "breakdown": [
+        {
+          "asset_id": "A09",
+          "cost": 2,
+          "duration_min": 30,
+          "title": "社群快讯模板"
+        }
+      ]
+    }
   },
   "runs": [
     {
